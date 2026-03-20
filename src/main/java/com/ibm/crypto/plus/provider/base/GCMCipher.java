@@ -190,6 +190,11 @@ public final class GCMCipher {
 
         long gcmCtx = getGCMContext(false, key.length, ockContext, provider);
 
+        // The OS_Helper functions are not NIST certified, thus they can't be used in FIPS mode.
+        if (ockContext.isFIPS()) {
+            GCMHardwareFunctionPtr = -1;
+        }
+
         if (GCMHardwareFunctionPtr == 0)
             GCMHardwareFunctionPtr = NativeInterface
                     .do_GCM_checkHardwareGCMSupport(ockContext.getId());
@@ -318,6 +323,11 @@ public final class GCMCipher {
 
         long gcmCtx = getGCMContext(true, key.length, ockContext, provider);
 
+        // The OS_Helper functions are not NIST certified, thus they can't be used in FIPS mode.
+        if (ockContext.isFIPS()) {
+            GCMHardwareFunctionPtr = -1;
+        }
+
         if (GCMHardwareFunctionPtr == 0)
             GCMHardwareFunctionPtr = NativeInterface
                     .do_GCM_checkHardwareGCMSupport(ockContext.getId());
@@ -442,7 +452,7 @@ public final class GCMCipher {
         if (rc != 0) {
             throw new OCKException(ErrorCodes.get(rc));
         }
-        
+
         //OCKDebug.Msg (debPrefix, methodName, "Returning length= " +  len);
         return len;
     }
@@ -500,7 +510,7 @@ public final class GCMCipher {
         //OCKDebug.Msg(debPrefix,methodName, "gcmCtx = " + gcmCtx );
 
         //To-Do - replace false with actual logic
-    
+
         //OCKDebug.Msg (debPrefix, methodName, "key.length :" + key.length + " iv.length :" + iv.length + " inputOffset :" + inputOffset);
         //OCKDebug.Msg (debPrefix, methodName, " inputLen :" + inputLen + " aadLen :" + aadLen + " tagLen :" + tagLen);
         //OCKDebug.Msg (debPrefix, methodName, "outputOffset :" + String.valueOf(outputOffset));
@@ -861,7 +871,7 @@ public final class GCMCipher {
         if (rc != 0) {
             throw new OCKException(ErrorCodes.get(rc));
         }
-        
+
         //OCKDebug.Msg(debPrefix, methodName,  "outLen=" + outLen + " output=",  output);
         return outLen;
     }
@@ -906,8 +916,8 @@ public final class GCMCipher {
         }
     }
 
-    /* 
-     * This method will be called by init/doFinal with no update calls. This won't 
+    /*
+     * This method will be called by init/doFinal with no update calls. This won't
      * look at what is buffered.
      */
     public static int getOutputSizeLegacy(int inputLen, boolean encrypting, int tLen) {
