@@ -259,37 +259,9 @@ def runOpenJCEPlus(command, software) {
             additional_exports = "export LIBPATH=$WORKSPACE/openjceplus/OCK/:$WORKSPACE/openjceplus/OCK/jgsk_sdk;"
         }
         if (software == "zos") {
-            // Setting exports here since forkCount is set to 0 on z/OS
-            additional_exports += "export JAVA_TOOL_OPTIONS=\"-Djgskit.library.path=$WORKSPACE/openjceplus/OpenJCEPlus/target/jgskit-mz-64/ " +
-                                            "-Dstdout.encoding=IBM-1047 " +
+            additional_exports += "export JAVA_TOOL_OPTIONS=\"-Dstdout.encoding=IBM-1047 " +
                                             "-Dstderr.encoding=IBM-1047 " +
-                                            "--add-exports=java.base/sun.security.internal.interfaces=ALL-UNNAMED " +
-                                            "--add-exports=java.base/sun.security.internal.interfaces=openjceplus " +
-                                            "--add-exports=java.base/sun.security.internal.spec=ALL-UNNAMED " +
-                                            "--add-exports=java.base/sun.security.internal.spec=openjceplus " +
-                                            "--add-exports=java.base/sun.security.pkcs=ALL-UNNAMED " +
-                                            "--add-exports=java.base/sun.security.pkcs=openjceplus " +
-                                            "--add-exports=java.base/sun.security.util=ALL-UNNAMED " +
-                                            "--add-exports=java.base/sun.security.util=openjceplus " +
-                                            "--add-exports=java.base/sun.security.x509=ALL-UNNAMED " +
-                                            "--add-exports=java.base/sun.security.x509=openjceplus " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.base=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.base.memstress=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.suites=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.tests=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.openjceplus=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.openjceplus.integration=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.openjceplus.memstress=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.openjceplus.multithread=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.openjceplusfips=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.openjceplusfips.integration=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/ibm.jceplus.junit.openjceplusfips.multithread=ALL-UNNAMED " +
-                                            "--add-opens=openjceplus/ibm.jceplus.junit.base=ALL-UNNAMED " +
-                                            "--add-opens=openjceplus/ibm.jceplus.junit.tests=ALL-UNNAMED " +
-                                            "--add-exports=openjceplus/com.ibm.crypto.plus.provider.base=ALL-UNNAMED " +
                                             "--patch-module=java.base=\"$WORKSPACE/java/java.base.jar\" " +
-                                            // "--patch-module=openjceplus=\"target/classes:target/test-classes\"" +
                                             "\";"
         }
 
@@ -327,11 +299,8 @@ def runOpenJCEPlus(command, software) {
         } else if (software == "aix") {
             environment = "export PATH=/opt/IBM/openxlC/17.1.3/bin:/opt/IBM/openxlC/17.1.3/tools:/opt/IBM/openxlC/17.1.3/compat/llvm:${mavenPath}:\$PATH;"
         } else if (software == "zos") {
-            // Setting forkCount to 0 or else the JVM crashes on z/OS
-            // additional_cmd_args += " -DforkCount=0"
-
             // Compile first so that the tests pick up the newly built jgskit library.
-            sh "${java_home} ${gskit_home} ${additional_exports} ${environment} mvn '-Dock.library.path=${ock_path}' ${additional_cmd_args} --batch-mode compile"
+            // sh "${java_home} ${gskit_home} ${additional_exports} ${environment} mvn '-Dock.library.path=${ock_path}' ${additional_cmd_args} --batch-mode compile"
         }
 
         if (software != "windows") {
