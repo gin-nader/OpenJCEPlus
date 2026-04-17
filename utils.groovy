@@ -289,7 +289,7 @@ def runOpenJCEPlus(command, software) {
                                             "--add-opens=openjceplus/ibm.jceplus.junit.tests=ALL-UNNAMED " +
                                             "--add-exports=openjceplus/com.ibm.crypto.plus.provider.base=ALL-UNNAMED " +
                                             "--patch-module=java.base=\"$WORKSPACE/java/java.base.jar\" " +
-                                            "--patch-module=openjceplus=\"target/classes:target/test-classes\"" +
+                                            // "--patch-module=openjceplus=\"target/classes:target/test-classes\"" +
                                             "\";"
         }
 
