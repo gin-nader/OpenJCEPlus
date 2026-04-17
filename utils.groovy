@@ -150,7 +150,7 @@ def getJava(hardware, software) {
     }
 
     def java_link = ""
-    
+
     // Check if JAVA_RELEASE is a URL that contains artifactory.
     if (JAVA_RELEASE.contains("https://na.artifactory.swg-devops.com")) {
         // JAVA_RELEASE is an Artifactory URL
@@ -210,7 +210,7 @@ def getJava(hardware, software) {
             script: "ls -d jdk 2>/dev/null || echo ''",
             returnStdout: true
         ).trim()
-        
+
         if (folderCheck == "") {
             // Folder is not named 'jdk', so find and rename it
             def java_prefix = "jdk-"
@@ -328,7 +328,7 @@ def runOpenJCEPlus(command, software) {
             environment = "export PATH=/opt/IBM/openxlC/17.1.3/bin:/opt/IBM/openxlC/17.1.3/tools:/opt/IBM/openxlC/17.1.3/compat/llvm:${mavenPath}:\$PATH;"
         } else if (software == "zos") {
             // Setting forkCount to 0 or else the JVM crashes on z/OS
-            additional_cmd_args += " -DforkCount=0"
+            // additional_cmd_args += " -DforkCount=0"
 
             // Compile first so that the tests pick up the newly built jgskit library.
             sh "${java_home} ${gskit_home} ${additional_exports} ${environment} mvn '-Dock.library.path=${ock_path}' ${additional_cmd_args} --batch-mode compile"
